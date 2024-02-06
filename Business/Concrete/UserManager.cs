@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -17,9 +18,16 @@ namespace Business.Concrete
         { 
             _userDal = userDal;
         }
-        public void AddUser(User user)
+        public IResults Add(User user)
         {
             _userDal.Add(user);
+
+            if (user.Name.Length<2)
+            {
+                return new FailureResult("User name must be at least 2 characters.");
+            }
+
+            return new Results(true, "User Added");
         }
 
         public void DeleteUser(User user)
