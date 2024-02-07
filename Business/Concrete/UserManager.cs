@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -18,36 +19,50 @@ namespace Business.Concrete
         { 
             _userDal = userDal;
         }
-        public IResults Add(User user)
+        public IResults AddUser(User user)
         {
             _userDal.Add(user);
 
-            if (user.Name.Length<2)
+            if (user.Name.Length<6)
             {
-                return new FailureResult("User name must be at least 2 characters.");
+                return new FailureResult(Messages.UserAddFail);
             }
 
-            return new Results(true, "User Added");
+            return new SuccessResult(Messages.UserAddSuccess);
         }
 
-        public void DeleteUser(User user)
+        public IResults DeleteUser(User user)
         {
             _userDal.Delete(user);
+            if (user.Name.Length < 6)
+            {
+                return new FailureResult(Messages.UserDeleteFail);
+            }
+
+            return new SuccessResult(Messages.UserDeleteFail);
+
+
         }
 
-        public List<User> GetAll()
+        public IDataResult<List<User>> GetAll()
         {
-            return _userDal.GetAll();   
+            if (DateTime.Now.Hour==24)
+            {
+                return new FailDataResult<List<User>>();
+            }
+            return new SuccessDataResult<List<User>>(_userDal.GetAll(),"Users listed.");
+
+
         }
 
-        public void UpdateUser(User user)
+        public IDataResult<List<User>> GetByUserName(string userName)
+        {
+            return new SuccessDataResult<List<User>> (_userDal.GetAll(n=>n.Name==userName));
+        }
+
+        public IResults UpdateUser(User user)
         {
             throw new NotImplementedException();
-        }
-
-        public List<User> GetByUserName(string userName)
-        {
-            return _userDal.GetAll(n=>n.Name==userName);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -10,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class GroupManager:IGroupService
+    public class GroupManager : IGroupService
     {
 
-         private readonly FlattyContext _context;
+        private readonly FlattyContext _context;
         IGroupDal _groupDal;
         private object filter;
 
@@ -22,42 +24,53 @@ namespace Business.Concrete
             _groupDal = groupDal;
         }
 
-        public void AddGroup(Group group)
+        public IResults AddGroup(Group group)
         {
             _groupDal.Add(group);
+            return new SuccessResult(Messages.GroupAddSuccess);
         }
 
-        public void DeleteGroup(Group group)
+        public IResults DeleteGroup(Group group)
         {
-            _groupDal.Delete(group);
+            return new SuccessResult(Messages.GroupDeleteSuccess);
         }
 
-        public List<Group> GetAll()
+        public IDataResult<List<Group>> GetAll()
         {
-            return _groupDal.GetAll();  
-        }
-
-        public List<Group> GetById(int groupId)
-        {
-            if (filter != null)
+            if (DateTime.Now.Hour == 24)
             {
-                return _context.Groups.Where(e => e.Id == groupId).ToList();
+                return new FailDataResult<List<Group>>();
             }
-            else
-            {
-                return _context.Groups.ToList();
-            }
+            return new SuccessDataResult<List<Group>>(_groupDal.GetAll(),Messages.GroupListedSuccess);   
         }
 
-        public List<Group> GetByGroupName(string groupName)
+        //public IDataResult<Group> GetById(int groupId)
+        //{
+        //    if (filter != null)
+        //    {
+        //        return new SuccessDataResult<Group>(_groupDal.Where(g => g.Id == groupId).ToList());
+        //    }
+        //    else
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //}
+
+        public IDataResult<List<Group>> GetByGroupName(string groupName)
         {
-            return _groupDal.GetAll(n=>n.Name==groupName);
+            return new SuccessDataResult<List<Group>>(_groupDal.GetAll(n => n.Name == groupName),Messages.GroupListedSuccess);
         }
 
+        public IDataResult<Group> GetById(int groupId)
+        {
+            return new SuccessDataResult<Group>(_groupDal.Get(g=>g.Id==groupId));
+        }
 
-        public void UpdateGroup(Group group)
+        public IResults UpdateGroup(Group group)
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

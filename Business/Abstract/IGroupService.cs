@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace Business.Abstract
 {
     public interface IGroupService
     {
-        List<Group> GetAll();
-        void AddGroup(Group group);
-        void UpdateGroup(Group group);
-        void DeleteGroup(Group group);
-        List<Group> GetByGroupName(string groupName);
-        List<Group> GetById(int groupId);
+        IDataResult<List<Group>> GetAll();
+        IResults AddGroup(Group group);
+        IResults UpdateGroup(Group group);
+        IResults DeleteGroup(Group group);
+        IDataResult<List<Group>> GetByGroupName(string groupName);
+        IDataResult<Group> GetById(int groupId);
     }
 }

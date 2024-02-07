@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations.Model;
@@ -11,11 +12,11 @@ namespace Business.Abstract
 {
     public interface IExpenseService
     {
-        List<Expense> GetAll();
-        void AddExpense(Expense expense);
-        void UpdateExpense(Expense expense);
-        void DeleteExpense(Expense expense);
+        IDataResult<List<Expense>> GetAll();
+        IResults AddExpense(Expense expense);
+        IResults UpdateExpense(Expense expense);
+        IResults DeleteExpense(Expense expense);
         void GetExpenseCount(int expenseId);
-        List<Expense> GetById(int expenseId);
+        IDataResult<Expense> GetById(int expenseId);
     }
 }

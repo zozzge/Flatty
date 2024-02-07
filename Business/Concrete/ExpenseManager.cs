@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -21,41 +23,44 @@ namespace Business.Concrete
             _expenseDal = expenseDal;
         }
 
-        public void AddExpense(Expense expense)
+        public IResults AddExpense(Expense expense)
         {
             _expenseDal.Add(expense);
+
+            if (expense.Amount < 6)
+            {
+                return new FailureResult(Messages.ExpenseAddFail);
+            }
+
+            return new SuccessResult(Messages.ExpenseAddSuccess);
         }
 
-        public void DeleteExpense(Expense expense)
+        public IResults DeleteExpense(Expense expense)
         {
             _expenseDal.Delete(expense);
-        }
-
-        public List<Expense> GetAll()
-        {
-            return _expenseDal.GetAll();
-        }
-
-        public List<Expense> GetById(int expenseId)
-        {
-            if (filter != null)
+            if (expense.Amount < 6)
             {
-                return _context.Expenses.Where(e => e.Id == expenseId).ToList();
+                return new FailureResult(Messages.ExpenseDeleteFail);
             }
-            else
-            {
-                return _context.Expenses.ToList();
-            }
+
+            return new SuccessResult(Messages.ExpenseDeleteFail);
         }
 
-        /*void GetExpenseCount(int expenseId)
+        
+
+        public IDataResult<List<Expense>> GetAll()
         {
-            _expenseDal.GetCountById(expenseId);
-        }*/
+            return new SuccessDataResult<List<Expense>>(_expenseDal.GetAll(),"Expenses listed.");
+        }
 
         public void UpdateExpense(Expense expense)
         {
             throw new NotImplementedException();
+        }
+
+        public IDataResult<Expense> GetById(int expenseId)
+        {
+               return new SuccessDataResult<Expense>(_expenseDal.Get(e => e.Id == expenseId));
         }
 
         void IExpenseService.GetExpenseCount(int expenseId)
@@ -63,6 +68,9 @@ namespace Business.Concrete
             _expenseDal.GetCountById(expenseId);
         }
 
-        
+        IResults IExpenseService.UpdateExpense(Expense expense)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
