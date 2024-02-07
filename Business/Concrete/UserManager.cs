@@ -55,6 +55,20 @@ namespace Business.Concrete
 
         }
 
+        public IDataResult<User> GetById(int id)
+        {
+            var user = _userDal.Get(u => u.Id == id);
+
+            // Check if the user with the specified ID exists
+            if (user == null)
+            {
+                return new FailDataResult<User>(null, Messages.UserNotFound);
+            }
+
+            // Return the user data wrapped in a success result
+            return new SuccessDataResult<User>(user, Messages.UserFound);
+        }
+
         public IDataResult<List<User>> GetByUserName(string userName)
         {
             return new SuccessDataResult<List<User>> (_userDal.GetAll(n=>n.Name==userName));
