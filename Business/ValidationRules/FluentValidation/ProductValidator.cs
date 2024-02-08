@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    public class ProductValidator:AbstractValidator<Product>
+    public class UserValidator:AbstractValidator<User>
     {
-        public ProductValidator()
+        public UserValidator()
         {
-            RuleFor(p => p.ProductName).NotEmpty();
-            RuleFor(p => p.ProductName).MinimumLength(2);
-            RuleFor(p => p.UnitPrice).NotEmpty();
-            RuleFor(p => p.UnitPrice).GreaterThan(0);
-            RuleFor(p => p.UnitPrice).GreaterThan(10).When(p=>p.CategoryId == 1);   
+            RuleFor(u => u.Name).NotEmpty();
+            RuleFor(u => u.Name).MinimumLength(6);
+            RuleFor(u => u.Email).NotEmpty();
+            RuleFor(u => u.Password).NotEmpty();
+            //RuleFor(u => u.UnitPrice).GreaterThan(10).When(p=>p.CategoryId == 1);   
 
 
 

@@ -21,13 +21,12 @@ namespace Business.Concrete
         }
         public IResults AddUser(User user)
         {
-            _userDal.Add(user);
-
-            if (user.Name.Length<6)
+            
+            if (CheckIfUserNameIsCorrect(user.Name).IsSuccess)
             {
+                _userDal.Add(user);
                 return new FailureResult(Messages.UserAddFail);
             }
-
             return new SuccessResult(Messages.UserAddSuccess);
         }
 
@@ -77,6 +76,16 @@ namespace Business.Concrete
         public IResults UpdateUser(User user)
         {
             throw new NotImplementedException();
+        }
+
+        private IResults CheckIfUserNameIsCorrect(string userName)
+        {
+            var result=_userDal.GetAll(u=>u.Name==userName);
+            if(userName.Length<=5)
+            {
+                return new FailureResult(Messages.UserNameInvalid);
+            }
+            return new SuccessResult();
         }
     }
 }
