@@ -1,4 +1,6 @@
-﻿namespace Core.Utilities.Interceptors
+﻿using Castle.DynamicProxy;
+
+namespace Core.Utilities.Interceptors
 {
     public partial class AspectInterceptorSelector
     {

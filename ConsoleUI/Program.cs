@@ -15,10 +15,10 @@ using System;
     AddSampleUsers(userManager);
 
     // Retrieve and display all users
-    DisplayAllUsers(userManager);
+    //DisplayAllUsers(userManager);
 
     // Retrieve and display users with a specific username
-    DisplayUsersByName(userManager, "JohnDoe");
+    //DisplayUsersByName(userManager, "JohnDoe");
 
     static void AddSampleUsers(UserManager userManager)
     {
@@ -29,26 +29,26 @@ using System;
         userManager.AddUser(user2);
     }
 
-    static void DisplayAllUsers(UserManager userManager)
-    {
-        Console.WriteLine("All Users:");
-        var allUsers = userManager.GetAll();
-        foreach (var user in allUsers)
-        {
-            Console.WriteLine($"User ID: {user.Id}, Name: {user.Name}, Email: {user.Email}");
-        }
-        Console.WriteLine();
-    }
+    //static void DisplayAllUsers(UserManager userManager)
+    //{
+    //    Console.WriteLine("All Users:");
+    //    var allUsers = userManager.GetAll();
+    //    foreach (var user in allUsers)
+    //    {
+    //        Console.WriteLine($"User ID: {user.Id}, Name: {user.Name}, Email: {user.Email}");
+    //    }
+    //    Console.WriteLine();
+    //}
 
-    static void DisplayUsersByName(UserManager userManager, string userName)
-    {
-        Console.WriteLine($"Users with Name '{userName}':");
-        var usersByName = userManager.GetByUserName(userName);
-        foreach (var user in usersByName)
-        {
-            Console.WriteLine($"User ID: {user.Id}, Name: {user.Name}, Email: {user.Email}");
-        }
-        Console.WriteLine();
-    }
+    //static void DisplayUsersByName(UserManager userManager, string userName)
+    //{
+    //    Console.WriteLine($"Users with Name '{userName}':");
+    //    var usersByName = userManager.GetByUserName(userName);
+    //    foreach (var user in usersByName)
+    //    {
+    //        Console.WriteLine($"User ID: {user.Id}, Name: {user.Name}, Email: {user.Email}");
+    //    }
+    //    Console.WriteLine();
+    //}
 
 

@@ -6,24 +6,24 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using IInterceptor = Castle.DynamicProxy.IInterceptor;
 
 namespace Core.Utilities.Interceptors
 {
-    public partial class AspectInterceptorSelector
+    
+    public class AspectInterceptorSelector : IInterceptorSelector
     {
-        public class AspectInterceptorSelector : IInterceptorSelector
+        public IInterceptor[] SelectInterceptors(Type type, MethodInfo method, IInterceptor[] interceptors)
         {
-            public IInterceptor[] SelectInterceptors(Type type, MethodInfo method, IInterceptor[] interceptors)
-            {
-                var classAttributes = type.GetCustomAttributes<MethodInterceptionBaseAttribute>
-                    (true).ToList();
-                var methodAttributes = type.GetMethod(method.Name)
-                    .GetCustomAttributes<MethodInterceptionBaseAttribute>(true);
-                classAttributes.AddRange(methodAttributes);
+            var classAttributes = type.GetCustomAttributes<MethodInterceptionBaseAttribute>
+                (true).ToList();
+            var methodAttributes = type.GetMethod(method.Name)
+                .GetCustomAttributes<MethodInterceptionBaseAttribute>(true);
+            classAttributes.AddRange(methodAttributes);
 
 
-                return classAttributes.OrderBy(x => x.Priority).ToArray();
-            }
+            return classAttributes.OrderBy(x => x.Priority).ToArray();
         }
     }
+    
 }

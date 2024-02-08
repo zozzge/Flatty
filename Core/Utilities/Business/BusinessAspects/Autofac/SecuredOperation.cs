@@ -1,4 +1,5 @@
 ﻿using Castle.DynamicProxy;
+using Core.Extensions;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,34 +12,33 @@ using static Core.Utilities.Interceptors.AspectInterceptorSelector;
 
 namespace Core.Utilities.Business.BusinessAspects.Autofac
 {
-    public class SecuredOperation
+    
+    public class SecuredOperation : MethodInterception
     {
-        public class SecuredOperation : MethodInterception
+        private string[] _roles;
+        private IHttpContextAccessor _httpContextAccessor;
+
+        public SecuredOperation(string roles)
         {
-            private string[] _roles;
-            private IHttpContextAccessor _httpContextAccessor;
+            _roles = roles.Split(',');
+            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
 
-            public SecuredOperation(string roles)
+        }
+
+        public object Messages { get; private set; }
+
+        protected override void OnBefore(IInvocation invocation)
+        {
+            var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
+            foreach (var role in _roles)
             {
-                _roles = roles.Split(',');
-                _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
-
-            }
-
-            public object Messages { get; private set; }
-
-            protected override void OnBefore(IInvocation invocation)
-            {
-                var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
-                foreach (var role in _roles)
+                if (roleClaims.Contains(role))
                 {
-                    if (roleClaims.Contains(role))
-                    {
-                        return;
-                    }
+                    return;
                 }
-                throw new Exception("Authorization Denied");
             }
+            throw new Exception("Authorization Denied");
         }
     }
+    
 }

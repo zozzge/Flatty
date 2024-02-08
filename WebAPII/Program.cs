@@ -6,6 +6,7 @@ using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using TokenOptions = Core.Utilities.Security.JWT.TokenOptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
