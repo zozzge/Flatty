@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -19,15 +21,20 @@ namespace Business.Concrete
         { 
             _userDal = userDal;
         }
+        [ValidationAspect(typeof(UserValidator))]
         public IResults AddUser(User user)
         {
             
             if (CheckIfUserNameIsCorrect(user.Name).IsSuccess)
             {
-                _userDal.Add(user);
-                return new FailureResult(Messages.UserAddFail);
+                if (CheckIfUserNameAlreadyExists(user.Name).IsSuccess)
+                {
+                    _userDal.Add(user);
+                    return new SuccessResult(Messages.UserAddSuccess);
+                }
+                                
             }
-            return new SuccessResult(Messages.UserAddSuccess);
+            return new FailureResult(Messages.UserAddFail);
         }
 
         public IResults DeleteUser(User user)
@@ -86,6 +93,16 @@ namespace Business.Concrete
                 return new FailureResult(Messages.UserNameInvalid);
             }
             return new SuccessResult();
+        }
+
+        private IResults CheckIfUserNameAlreadyExists(string userName)
+        {
+            var result = _userDal.GetAll(u=>u.Name==userName);
+            if (userName.Any())
+            {
+                return new FailureResult(Messages.UserNameAlreadyExists);
+            }
+            return new SuccessResult(); 
         }
     }
 }

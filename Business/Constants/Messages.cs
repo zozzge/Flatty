@@ -15,12 +15,12 @@ namespace Business.Constants
         public static string UserFound = "User found.";
         public static string UserNameValid = "Username valid";
 
-
         public static string UserAddFail = "User creation failed.";
         public static string UserDeleteFail = "User deletion failed.";
         public static string UserUpdateFail = "User update failed.";
         public static string UserNotFound = "User not found.";
         public static string UserNameInvalid = "Username invalid";
+        public static string UserNameAlreadyExists = "Username already exists.";
 
         public static string GroupAddSuccess = "Group created successfully.";
         public static string GroupDeleteSuccess = "Group deleted successfully.";
