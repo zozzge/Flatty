@@ -22,11 +22,11 @@ using System;
 
     static void AddSampleUsers(UserManager userManager)
     {
-        User user1 = new User { Id = 1, Name = "JohnDoe", Email = "john.doe@example.com", Password = "password1" };
-        User user2 = new User { Id = 2, Name = "JaneDoe", Email = "jane.doe@example.com", Password = "password2" };
+        //User user1 = new User { Id = 1, Name = "JohnDoe", Email = "john.doe@example.com", Password = "password1" };
+        //User user2 = new User { Id = 2, Name = "JaneDoe", Email = "jane.doe@example.com", Password = "password2" };
 
-        userManager.AddUser(user1);
-        userManager.AddUser(user2);
+        //userManager.AddUser(user1);
+        //userManager.AddUser(user2);
     }
 
     //static void DisplayAllUsers(UserManager userManager)

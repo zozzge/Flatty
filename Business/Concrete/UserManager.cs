@@ -1,10 +1,11 @@
 ﻿using Business.Abstract;
 using Business.Constants;
-using Business.ValidationRules.FluentValidation;
-using Core.Aspects.Autofac.Validation;
+using Core.Entities.Concrete;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Hashing;
+using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
-using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,92 +18,85 @@ namespace Business.Concrete
     {
         IUserDal _userDal;
 
-        public UserManager(IUserDal userDal) 
-        { 
+        public UserManager(IUserDal userDal)
+        {
             _userDal = userDal;
         }
-        [ValidationAspect(typeof(UserValidator))]
-        public IResults AddUser(User user)
+
+        public List<OperationClaim> GetClaims(User user)
         {
-            
-            if (CheckIfUserNameIsCorrect(user.Name).IsSuccess)
+            return _userDal.GetClaims(user);
+        }
+
+        public void Add(User user)
+        {
+            _userDal.Add(user);
+        }
+
+        public User GetByMail(string email)
+        {
+            return _userDal.Get(u => u.EMail == email);
+        }
+    }
+
+    public class AuthManager : IAuthService
+    {
+        private IUserService _userService;
+        private ITokenHelper _tokenHelper;
+
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+        {
+            _userService = userService;
+            _tokenHelper = tokenHelper;
+        }
+
+        public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
+        {
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            var user = new User
             {
-                if (CheckIfUserNameAlreadyExists(user.Name).IsSuccess)
-                {
-                    _userDal.Add(user);
-                    return new SuccessResult(Messages.UserAddSuccess);
-                }
-                                
+                EMail = userForRegisterDto.Email,
+                FirstName = userForRegisterDto.Name,
+                LastName = userForRegisterDto.LastName,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true
+            };
+            _userService.Add(user);
+            return new SuccessDataResult<User>(user, "User Signed Up");
+        }
+
+        public IDataResult<User> Login(UserForLoginDto userForLoginDto)
+        {
+            var userToCheck = _userService.GetByMail(userForLoginDto.Email);
+            if (userToCheck == null)
+            {
+                return new FailDataResult<User>("User Not Found");
             }
-            return new FailureResult(Messages.UserAddFail);
-        }
 
-        public IResults DeleteUser(User user)
-        {
-            _userDal.Delete(user);
-            if (user.Name.Length < 6)
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
             {
-                return new FailureResult(Messages.UserDeleteFail);
+                return new FailDataResult<User>("Password Error");
             }
 
-            return new SuccessResult(Messages.UserDeleteFail);
-
-
+            return new SuccessDataResult<User>(userToCheck, "Successfull Log In");
         }
 
-        public IDataResult<List<User>> GetAll()
+        public IResults UserExists(string email)
         {
-            if (DateTime.Now.Hour==24)
+            if (_userService.GetByMail(email) != null)
             {
-                return new FailDataResult<List<User>>();
-            }
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(),"Users listed.");
-
-
-        }
-
-        public IDataResult<User> GetById(int id)
-        {
-            var user = _userDal.Get(u => u.Id == id);
-
-            // Check if the user with the specified ID exists
-            if (user == null)
-            {
-                return new FailDataResult<User>(null, Messages.UserNotFound);
-            }
-
-            // Return the user data wrapped in a success result
-            return new SuccessDataResult<User>(user, Messages.UserFound);
-        }
-
-        public IDataResult<List<User>> GetByUserName(string userName)
-        {
-            return new SuccessDataResult<List<User>> (_userDal.GetAll(n=>n.Name==userName));
-        }
-
-        public IResults UpdateUser(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        private IResults CheckIfUserNameIsCorrect(string userName)
-        {
-            var result=_userDal.GetAll(u=>u.Name==userName);
-            if(userName.Length<=5)
-            {
-                return new FailureResult(Messages.UserNameInvalid);
+                return new FailureResult("User Already Exists");
             }
             return new SuccessResult();
         }
 
-        private IResults CheckIfUserNameAlreadyExists(string userName)
+        public IDataResult<AccessToken> CreateAccessToken(User user)
         {
-            var result = _userDal.GetAll(u=>u.Name==userName);
-            if (userName.Any())
-            {
-                return new FailureResult(Messages.UserNameAlreadyExists);
-            }
-            return new SuccessResult(); 
+            var claims = _userService.GetClaims(user);
+            var accessToken = _tokenHelper.CreateToken(user, claims);
+            return new SuccessDataResult<AccessToken>(accessToken, "Access Token Created");
         }
     }
 }

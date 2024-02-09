@@ -6,11 +6,13 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Entities.Concrete;
 
 namespace DataAccess.Abstract
 {
     public interface IUserDal:IEntityRepository<User>
     {
-        
+        List<OperationClaim> GetClaims(User user);
+
     }
 }
