@@ -4,6 +4,7 @@ using Core.Extensions;
 using Core.Utilities.Security.Encryption;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,7 +23,8 @@ namespace Core.Utilities.Security.JWT
         public JwtHelper(IConfiguration configuration)
         {
             Configuration = configuration;
-            _tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>() ?? throw new ArgumentNullException(nameof(_tokenOptions)) ?? throw new ArgumentNullException(nameof(_tokenOptions));
+            var _tokenOption = Configuration.GetSection("TokenOptions").Value;
+            _tokenOptions = JsonConvert.DeserializeObject<TokenOptions>(_tokenOption);
         }
         public AccessToken CreateToken(User user, List<OperationClaim> operationClaims)
         {
