@@ -64,9 +64,10 @@ namespace WebAPI
                     };
                 });
 
-            //services.AddDependencyResolvers(new ICoreModule[] {
-               //new CoreModule()
-            //});
+            //polymorphism
+            services.AddDependencyResolvers(new ICoreModule[] {
+               new CoreModule()
+            });
 
         }
 
@@ -93,7 +94,7 @@ namespace WebAPI
             {
                 endpoints.MapControllers();
             });
-            //23.10 dersteyiz
+            
         }
     }
 }
