@@ -9,9 +9,9 @@ namespace Core.Utilities.IoC
 {
     public class ServiceTool
     {
-        public static IServiceProvider ServiceProvider { get; private set; }
+        public static IServiceProvider ServiceProvider { get; private set; } = null!;
 
-        public static ICoreModule Create(ICoreModule services)
+        public static IServiceCollection Create(IServiceCollection services)
         {
             ServiceProvider = services.BuildServiceProvider();
             return services;

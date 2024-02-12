@@ -1,22 +1,17 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Business.DependencyResolvers.Autofac;
+using Core.DependencyResolvers;
+using Core.Extensions;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using TokenOptions = Core.Utilities.Security.JWT.TokenOptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Register other services
 builder.Services.AddControllers();
-//builder.Services.AddSingleton<IProductService,ProductManager>(); //Implements a ProductManager when IProductService
-//builder.Services.AddSingleton<IProductDal, EfProductDal>();      //is wanted.
-//It resolves the need of writing the same
-//'new' operation for many times.
 
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -35,27 +30,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-
-
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+// Use Autofac as the default DI and configure it
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(b =>
     {
         b.RegisterModule(new AutofacBusinessModule());
     });
 
-//ServiceTool.Create(builder.Services);
+builder.Services.AddDependencyResolvers(new CoreModule());
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -64,9 +55,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

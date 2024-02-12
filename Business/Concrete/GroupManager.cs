@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business.BusinessAspects.Autofac;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -24,6 +27,8 @@ namespace Business.Concrete
             _groupDal = groupDal;
         }
 
+        [SecuredOperation("product.add,admin")]
+        [ValidationAspect(typeof(GroupValidator))]
         public IResults AddGroup(Group group)
         {
             _groupDal.Add(group);
@@ -66,8 +71,15 @@ namespace Business.Concrete
             return new SuccessDataResult<Group>(_groupDal.Get(g=>g.Id==groupId));
         }
 
+        [ValidationAspect(typeof(GroupValidator))]
+        //[CacheRemoveAspect("IProductService.Get")]
         public IResults UpdateGroup(Group group)
         {
+            var result = _groupDal.GetAll(p => p.Id == group.Id).Count;
+            if (result >= 10)
+            {
+                return new FailureResult("A group count error occured. ");
+            }
             throw new NotImplementedException();
         }
 
