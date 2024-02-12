@@ -7,8 +7,8 @@ namespace Entities.Concrete
     {
         public int Id {  get; set; }
         public Group Group { get; set; }
-        public User Debtor { get; set; }
-        public User Creditor { get; set; }
+        public int DebtorId { get; set; }
+        public int CreditorId { get; set; }
         public decimal Balance { get; set; }
 
 

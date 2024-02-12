@@ -33,15 +33,17 @@ namespace Business.Constants
         public static string GroupUpdateFail = "Group update failed.";
         public static string GroupListedFail = "Group list failed.";
 
-        public const string ExpenseAddSuccess = "Expense added successfully.";
-        public const string ExpenseDeleteSuccess = "Expense deleted successfully.";
-        public const string ExpenseUpdateSuccess = "Expense updated successfully.";
+        public static string ExpenseAddSuccess = "Expense added successfully.";
+        public static string ExpenseDeleteSuccess = "Expense deleted successfully.";
+        public static string ExpenseUpdateSuccess = "Expense updated successfully.";
         public static string ExpensesListedSuccess = "Expenses listed successfully.";
 
-        public const string ExpenseAddFail = "Expense creation failed.";
-        public const string ExpenseDeleteFail = "Expense deletion failed.";
-        public const string ExpenseUpdateFail = "Expense update failed.";
+        public static string ExpenseAddFail = "Expense creation failed.";
+        public static string ExpenseDeleteFail = "Expense deletion failed.";
+        public static string ExpenseUpdateFail = "Expense update failed.";
         public static string ExpensesListedFailed = "Expense list failed.";
+
+        public static string AuthorizationDenied = "Yetkiniz yok.";
 
 
 

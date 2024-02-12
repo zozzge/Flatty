@@ -21,14 +21,14 @@ namespace Business.DependencyResolvers.Autofac
         protected override void Load(ContainerBuilder builder)
         {
             //When IProductService is wanted new the ProductManager. (Same purpose with AddSingleton.)
-            builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
-            builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
+            builder.RegisterType<GroupManager>().As<IGroupService>().SingleInstance();
+            builder.RegisterType<EfGroupDal>().As<IGroupDal>().SingleInstance();
 
             builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();
 
 
-            builder.RegisterType<CategoryManager>().As<ICategoryService>().SingleInstance();
-            builder.RegisterType<EfCategoryDal>().As<ICategoryDal>().SingleInstance();
+            builder.RegisterType<ExpenseManager>().As<IExpenseService>().SingleInstance();
+            builder.RegisterType<EfExpenseDal>().As<IExpenseDal>().SingleInstance();
 
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
