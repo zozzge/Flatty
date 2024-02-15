@@ -43,7 +43,7 @@ namespace Business.Constants
         public static string ExpenseUpdateFail = "Expense update failed.";
         public static string ExpensesListedFailed = "Expense list failed.";
 
-        public static string AuthorizationDenied = "Yetkiniz yok.";
+        public static string AuthorizationDenied = "You don't have authorization.";
 
 
 

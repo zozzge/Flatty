@@ -12,3 +12,4 @@ namespace Core.Utilities.Security.JWT
         public DateTime Expiration { get; set; }
     }
 }
+
