@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Core.Entities.Concrete;
+using Entities.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;

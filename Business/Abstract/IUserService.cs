@@ -1,6 +1,6 @@
 ﻿using Core.Entities.Concrete;
 using Core.Utilities.Results;
-using Entities.Concrete;
+using Core.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;

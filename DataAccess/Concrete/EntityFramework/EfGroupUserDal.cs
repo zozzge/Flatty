@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfMemberBalanceDal : EfEntityRepositoryBase<MemberBalance, FlattyContext>, IMemberBalanceDal
+    public class EfGroupUserDal : EfEntityRepositoryBase<GroupUser, FlattyContext>, IGroupUserDal
     {
         
     }

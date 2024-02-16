@@ -31,7 +31,15 @@ namespace Business.Concrete
                 PasswordSalt = passwordSalt,
                 Status = true
             };
-            _userService.Add(user);
+            _userService.Add(new User
+            {
+                EMail = userForRegisterDto.Email,
+                FirstName = userForRegisterDto.Name,
+                LastName = userForRegisterDto.LastName,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true
+            });
             return new SuccessDataResult<User>(user, "User Signed Up");
         }
 

@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DataAccess.Abstract
 {
-    public interface IMemberBalanceDal : IEntityRepository<MemberBalance>
+    public interface IGroupUserDal : IEntityRepository<GroupUser>
     {
         
         

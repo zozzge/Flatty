@@ -5,15 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Entities.Concrete;
 
 namespace Entities.Concrete
 {
-    public class Group:IEntity
+    public class Group : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        Expense Expense { get; set; }
-        MemberBalance Balance { get; set; }
+        public string Description { get; set; }
+
+        
+        public ICollection<GroupUser> GroupUsers {get;set;}
 
     }
+
+   
 }

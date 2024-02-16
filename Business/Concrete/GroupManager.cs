@@ -2,6 +2,7 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Entities.Concrete;
 using Core.Utilities.Business.BusinessAspects.Autofac;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Business.Concrete
 {
     public class GroupManager : IGroupService
@@ -21,6 +23,9 @@ namespace Business.Concrete
         private readonly FlattyContext _context;
         IGroupDal _groupDal;
         private object filter;
+
+        IUserDal _userDal;
+        IGroupUserDal _groupUserDal;
 
         public GroupManager(IGroupDal groupDal) 
         {
@@ -37,6 +42,7 @@ namespace Business.Concrete
 
         public IResults DeleteGroup(Group group)
         {
+            _groupDal.Delete(group);
             return new SuccessResult(Messages.GroupDeleteSuccess);
         }
 
@@ -49,17 +55,10 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Group>>(_groupDal.GetAll(),Messages.GroupListedSuccess);   
         }
 
-        //public IDataResult<Group> GetById(int groupId)
-        //{
-        //    if (filter != null)
-        //    {
-        //        return new SuccessDataResult<Group>(_groupDal.Where(g => g.Id == groupId).ToList());
-        //    }
-        //    else
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
+        public IDataResult<List<User>> GetAll(int groupId)
+        {
+            return new SuccessDataResult<List<User>>(_userDal.GetAll(gu => gu.Id == groupId));
+        }
 
         public IDataResult<List<Group>> GetByGroupName(string groupName)
         {
@@ -69,6 +68,27 @@ namespace Business.Concrete
         public IDataResult<Group> GetById(int groupId)
         {
             return new SuccessDataResult<Group>(_groupDal.Get(g=>g.Id==groupId));
+        }
+
+        public IDataResult<List<GroupUser>> GetList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetUserCount(int groupId)
+        {
+            int userCount = _context.GroupsUsers.Count(gu => gu.GroupId == groupId);
+
+            return userCount;
+        }
+
+        public IDataResult<List<User>> GetUsers(int groupId)
+        {
+            var group = _groupDal.Get(g=>g.Id==groupId);
+            var users = new List<User>();
+
+
+            return new SuccessDataResult<List<User>>(users);
         }
 
         [ValidationAspect(typeof(GroupValidator))]
