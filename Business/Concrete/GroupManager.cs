@@ -60,6 +60,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<User>>(_userDal.GetAll(gu => gu.Id == groupId));
         }
 
+        
+
         public IDataResult<List<Group>> GetByGroupName(string groupName)
         {
             return new SuccessDataResult<List<Group>>(_groupDal.GetAll(n => n.Name == groupName),Messages.GroupListedSuccess);

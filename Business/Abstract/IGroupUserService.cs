@@ -16,6 +16,7 @@ namespace Business.Abstract
         //void DeleteMemberBalance(MemberBalance memberBalance);
         //void CalculateMemberBalance(int groupId);
 
+
         
     }
 }

@@ -17,6 +17,8 @@ namespace Business.Concrete
         private readonly FlattyContext _context;
         IExpenseDal _expenseDal;
         private object filter;
+        IGroupDal _groupDal;
+        IUserDal _userDal;
 
         public ExpenseManager(IExpenseDal expenseDal)
         {
@@ -71,6 +73,12 @@ namespace Business.Concrete
         IResults IExpenseService.UpdateExpense(Expense expense)
         {
             throw new NotImplementedException();
+        }
+
+        public void GetExpenseBalance(int expenseId,int groupId,int payerId)
+        {
+            int memberCount = _groupDal.GetCountById(groupId);
+            
         }
     }
 }

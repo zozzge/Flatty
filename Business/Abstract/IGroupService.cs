@@ -15,6 +15,7 @@ namespace Business.Abstract
         IDataResult<List<User>> GetUsers(int groupId);
 
         int GetUserCount(int groupId);
+        
         IDataResult<List<GroupUser>> GetList();
 
         IDataResult<List<Group>> GetAll();

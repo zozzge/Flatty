@@ -17,6 +17,7 @@ namespace Business.Abstract
         IResults UpdateExpense(Expense expense);
         IResults DeleteExpense(Expense expense);
         void GetExpenseCount(int expenseId);
+        void GetExpenseBalance(int expenseId,int groupId,int payerId);
         IDataResult<Expense> GetById(int expenseId);
     }
 }
