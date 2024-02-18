@@ -12,11 +12,11 @@ namespace Business.Abstract
 {
     public interface IGroupService
     {
-        IDataResult<List<User>> GetUsers(int groupId);
+        IDataResult<List<User>> GetMembers(int groupId);
 
-        int GetUserCount(int groupId);
+        int GetMemberCount(int groupId);
         
-        IDataResult<List<GroupUser>> GetList();
+        IDataResult<List<Balance>> GetList();
 
         IDataResult<List<Group>> GetAll();
 

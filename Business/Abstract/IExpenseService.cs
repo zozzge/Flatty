@@ -1,4 +1,5 @@
-﻿using Core.Utilities.Results;
+﻿using Core.Entities.Concrete;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,11 @@ namespace Business.Abstract
     public interface IExpenseService
     {
         IDataResult<List<Expense>> GetAll();
-        IResults AddExpense(Expense expense);
+        IResults AddExpense(Expense expense,int expenseAdderUserId);
         IResults UpdateExpense(Expense expense);
         IResults DeleteExpense(Expense expense);
         void GetExpenseCount(int expenseId);
-        void GetExpenseBalance(int expenseId,int groupId,int payerId);
+        //void GetExpenseBalance(decimal amount,User userAddingExpense,List<User> groupMembers);
         IDataResult<Expense> GetById(int expenseId);
     }
 }

@@ -25,7 +25,7 @@ namespace Business.Concrete
         private object filter;
 
         IUserDal _userDal;
-        IGroupUserDal _groupUserDal;
+        IBalanceDal _groupUserDal;
 
         public GroupManager(IGroupDal groupDal) 
         {
@@ -72,19 +72,19 @@ namespace Business.Concrete
             return new SuccessDataResult<Group>(_groupDal.Get(g=>g.Id==groupId));
         }
 
-        public IDataResult<List<GroupUser>> GetList()
+        public IDataResult<List<Balance>> GetList()
         {
             throw new NotImplementedException();
         }
 
-        public int GetUserCount(int groupId)
+        public int GetMemberCount(int groupId)
         {
-            int userCount = _context.GroupsUsers.Count(gu => gu.GroupId == groupId);
+            int userCount = _context.Balances.Count(gu => gu.GroupId == groupId);
 
             return userCount;
         }
 
-        public IDataResult<List<User>> GetUsers(int groupId)
+        public IDataResult<List<User>> GetMembers(int groupId)
         {
             var group = _groupDal.Get(g=>g.Id==groupId);
             var users = new List<User>();

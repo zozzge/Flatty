@@ -11,6 +11,8 @@ namespace Entities.Concrete
     public class Expense:IEntity
     {
         public int Id { get; set; }
+        public int GroupId { get; set; }
+
         public int PaidById { get; set; }
         public int PaidOnId { get; set; }
         public decimal Amount { get; set; }
@@ -18,9 +20,6 @@ namespace Entities.Concrete
         
     }
 
-    public enum ExpenseType
-    {
-        Debt,
-        Credit
-    }
+
+  
 }

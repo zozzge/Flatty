@@ -19,24 +19,24 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<User> Users { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<GroupUser> GroupsUsers { get; set; }
+        public DbSet<Balance> Balances { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure the many-to-many relationship between Group and User
-            modelBuilder.Entity<GroupUser>()
+            modelBuilder.Entity<Balance>()
                 .HasKey(gu => new { gu.GroupId, gu.UserId });
 
-            modelBuilder.Entity<GroupUser>()
+            modelBuilder.Entity<Balance>()
                 .HasOne(gu => gu.Group)
-                .WithMany(g => g.GroupUsers)
+                .WithMany(g => g.Balance)
                 .HasForeignKey(gu => gu.GroupId);
 
-            modelBuilder.Entity<GroupUser>()
+            modelBuilder.Entity<Balance>()
                 .HasOne(gu => gu.User)
-                .WithMany(u => u.GroupUsers)
+                .WithMany(u => u.Balance)
                 .HasForeignKey(gu => gu.UserId);
         }
 

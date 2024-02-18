@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-    public interface IGroupUserDal : IEntityRepository<GroupUser>
+    public interface IBalanceDal : IEntityRepository<Balance>
     {
         
         

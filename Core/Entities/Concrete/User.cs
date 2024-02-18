@@ -12,7 +12,8 @@ namespace Core.Entities.Concrete
         public int Id { get; set; }
         public string FirstName { get; set; }
             public string LastName { get; set; }
-            public ICollection<GroupUser> GroupUsers { get; set; }
+            public ICollection<Balance> Balances { get; set; }
+            public decimal Balance { get; set; }
             public string EMail { get; set; }
             public byte[] PasswordHash { get; set; }
             public byte[] PasswordSalt { get; set; }
