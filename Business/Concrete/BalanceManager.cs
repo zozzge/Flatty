@@ -24,20 +24,20 @@ namespace Business.Concrete
             _context = context;
         }
 
-        public IResults IncreaseBalance(Balance balance)
+        public void IncreaseBalance(int id,decimal amount)
         {
-            var amount= balance.Amount;
+            var balance = _balanceDal.Get(b => b.Id == id );
             balance.Amount += amount;
             _balanceDal.Update(balance);
-            return new SuccessResult(Messages.BalanceUpdated);
+            
         }
 
-        public IResults DecreaseBalance(Balance balance)
+        public void DecreaseBalance(int id,decimal amount)
         {
-            var amount = balance.Amount;
+            var balance = _balanceDal.Get(b => b.Id == id);
             balance.Amount -= amount;
             _balanceDal.Update(balance);
-            return new SuccessResult(Messages.BalanceUpdated);
+            
         }
     }
 }

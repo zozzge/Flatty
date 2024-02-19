@@ -11,8 +11,8 @@ namespace Business.Abstract
     public interface IBalanceService
     {
         
-        IResults IncreaseBalance(Balance balance);
-        IResults DecreaseBalance(Balance balance);
+        public void IncreaseBalance(int id, decimal amount);
+        public void DecreaseBalance(int id, decimal amount);
 
     }
 }

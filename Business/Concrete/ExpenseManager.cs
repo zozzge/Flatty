@@ -17,6 +17,8 @@ namespace Business.Concrete
     public class ExpenseManager : IExpenseService
     {
         private readonly FlattyContext _context;
+        private readonly BalanceManager balanceManager;
+        private readonly GroupManager groupManager;
         IExpenseDal _expenseDal;
         private object filter;
         IGroupDal _groupDal;
@@ -26,14 +28,19 @@ namespace Business.Concrete
         public ExpenseManager(IExpenseDal expenseDal)
         {
             _expenseDal = expenseDal;
+            
         }
+        
 
         public IResults AddExpense(Expense expense,int expenseAdderUserId)
         {
             var amount = expense.Amount;
-            var groupMembers = _groupDal.GetMembers(expense.GroupId)
-                                         .Where(m => m.UserId != expenseAdderUserId)
-                                         .ToList();
+            var groupMembersResult = this.groupManager.GetMembers(expense.GroupId);
+
+            var groupMembers = groupMembersResult.Data
+                             .Where(m => m.Id != expenseAdderUserId)
+                             .ToList();
+
 
             int memberCount = groupMembers.Count();
             decimal amountPerMember = expense.Amount / memberCount;
@@ -41,13 +48,13 @@ namespace Business.Concrete
 
             foreach (var member in groupMembers)
             {
-                if (member.UserId == expense.PaidById) // Credit
+                if (member.Id == expense.PaidById) // Credit
                 {
-                    _balanceDal..IncreaseBalance(member.GroupId, amountPerMember);
+                    this.balanceManager.IncreaseBalance(expense.GroupId,amountToUser);
                 }
                 else // Debt
                 {
-                    _balanceDal.DecreaseBalance(member.UserId, amountPerMember);
+                    this.balanceManager.DecreaseBalance(expense.GroupId,amountPerMember);
                 }
             }
 

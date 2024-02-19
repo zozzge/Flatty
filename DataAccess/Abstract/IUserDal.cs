@@ -7,6 +7,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Entities.Concrete;
+using Core.DataAccess;
 
 namespace DataAccess.Abstract
 {
