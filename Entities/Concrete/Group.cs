@@ -1,5 +1,4 @@
-﻿using Entities.Abstract;
-using Core.Entities;
+﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +13,7 @@ namespace Entities.Concrete
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
-        
-        public ICollection<GroupUser> GroupUsers {get;set;}
+        public ICollection<Balance> Balance {get;set;}
 
     }
 

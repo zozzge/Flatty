@@ -30,6 +30,7 @@ namespace Business.Concrete
 
         public IResults AddExpense(Expense expense,int expenseAdderUserId)
         {
+            var amount = expense.Amount;
             var groupMembers = _groupDal.GetMembers(expense.GroupId)
                                          .Where(m => m.UserId != expenseAdderUserId)
                                          .ToList();
@@ -40,21 +41,15 @@ namespace Business.Concrete
 
             foreach (var member in groupMembers)
             {
-                if (member.UserId == expense.PaidById) // Expense adder (credit)
+                if (member.UserId == expense.PaidById) // Credit
                 {
-                    _balanceDal.IncreaseBalance(member.UserId, amountPerMember);
+                    _balanceDal..IncreaseBalance(member.GroupId, amountPerMember);
                 }
-                else // Group members (debt)
+                else // Debt
                 {
                     _balanceDal.DecreaseBalance(member.UserId, amountPerMember);
                 }
             }
-
-
-
-
-
-
 
             return new SuccessResult(Messages.ExpenseAddSuccess);
         }

@@ -45,6 +45,9 @@ namespace Business.Constants
 
         public static string AuthorizationDenied = "You don't have authorization.";
 
+        public static string BalanceUpdated = "Balance is updated due to expense adding.";
+
+
 
 
 

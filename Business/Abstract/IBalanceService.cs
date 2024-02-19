@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,9 @@ namespace Business.Abstract
 {
     public interface IBalanceService
     {
-        Balance GetByUserIdAndGroupId(int userId, int groupId);
-        void IncreaseBalance(int userId, int groupId, decimal amount);
-        void DecreaseBalance(int userId, int groupId, decimal amount);
-
-
+        
+        IResults IncreaseBalance(Balance balance);
+        IResults DecreaseBalance(Balance balance);
 
     }
 }

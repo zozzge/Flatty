@@ -79,9 +79,9 @@ namespace Business.Concrete
 
         public int GetMemberCount(int groupId)
         {
-            int userCount = _context.Balances.Count(gu => gu.GroupId == groupId);
+            int memberCount = _context.Groups.Count(gu => gu.Id == groupId);
 
-            return userCount;
+            return memberCount;
         }
 
         public IDataResult<List<User>> GetMembers(int groupId)
